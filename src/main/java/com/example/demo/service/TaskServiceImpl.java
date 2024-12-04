@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -33,8 +32,8 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseDto getTaskById(final Long id) {
 
-        Optional<Task> task = findTaskById(id);
-        return taskMapper.mapToDto(task.get());
+        Task task = findTaskById(id);
+        return taskMapper.mapToDto(task);
     }
 
     @LogTracking
@@ -71,19 +70,19 @@ public class TaskServiceImpl implements TaskService {
     @LogExecution
     @LogResult
     @LogTracking
+    @LogException
     @Transactional
     @Override
     public TaskResponseDto updateTask(final TaskRequestDto taskDto, final Long id) {
-        Optional<Task> task = findTaskById(id);
-        if (task.isPresent()) {
-            task = Optional.ofNullable(taskMapper.mapToTask(taskDto));
-            task.get().setId(id);
-            taskRepository.save(task.get());
-        }
-        return taskMapper.mapToDto(task.get());
+        Task task = findTaskById(id);
+        task.setDescription(taskDto.description());
+        task.setTitle(taskDto.title());
+        task.setUserId(taskDto.userId());
+        taskRepository.save(task);
+        return taskMapper.mapToDto(task);
     }
 
-    private Optional<Task> findTaskById(final Long id) {
-        return Optional.ofNullable(taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("Task with id " + id + " not found")));
+    private Task findTaskById(final Long id) {
+        return taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("Task with id " + id + " not found"));
     }
 }
