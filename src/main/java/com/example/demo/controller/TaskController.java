@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.dto.TaskRequestDto;
+import com.example.demo.kafka.KafkaTaskProducer;
+import com.example.demo.model.dto.TaskDto;
 import com.example.demo.model.dto.TaskResponseDto;
+import com.example.demo.model.dto.TaskUpdateDto;
 import com.example.demo.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,10 +24,11 @@ import java.util.List;
 @RequestMapping("/tasks")
 public class TaskController {
     private final TaskService taskService;
+    private final KafkaTaskProducer kafkaTaskProducer;
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTask(@RequestBody TaskRequestDto task) {
+    public void createTask(@RequestBody TaskDto task) {
         taskService.saveTask(task);
     }
 
@@ -45,7 +48,10 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public TaskResponseDto updateTask(@RequestBody TaskRequestDto task, @PathVariable Long id) {
-        return taskService.updateTask(task, id);
+    public TaskResponseDto updateTask(@RequestBody TaskDto task, @PathVariable Long id) {
+        TaskResponseDto taskResponseDto = taskService.updateTask(task, id);
+        TaskUpdateDto taskUpdateDto = new TaskUpdateDto(id, taskResponseDto.status());
+        kafkaTaskProducer.sendTo("task-status-topic", taskUpdateDto);
+        return taskResponseDto;
     }
 }
