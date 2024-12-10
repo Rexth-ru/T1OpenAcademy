@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.aspect.annotation.LogException;
 import com.example.demo.aspect.annotation.LogExecution;
@@ -7,9 +7,10 @@ import com.example.demo.aspect.annotation.LogTracking;
 import com.example.demo.exception.TaskNotFoundException;
 import com.example.demo.mapper.TaskMapper;
 import com.example.demo.model.Task;
-import com.example.demo.model.dto.TaskRequestDto;
+import com.example.demo.model.dto.TaskDto;
 import com.example.demo.model.dto.TaskResponseDto;
 import com.example.demo.repository.TaskRepository;
+import com.example.demo.service.TaskService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -62,7 +63,7 @@ public class TaskServiceImpl implements TaskService {
     @LogException
     @Transactional
     @Override
-    public void saveTask(final TaskRequestDto taskDto) {
+    public void saveTask(final TaskDto taskDto) {
         Task task = taskMapper.mapToTask(taskDto);
         taskRepository.save(task);
     }
@@ -73,11 +74,13 @@ public class TaskServiceImpl implements TaskService {
     @LogException
     @Transactional
     @Override
-    public TaskResponseDto updateTask(final TaskRequestDto taskDto, final Long id) {
+    public TaskResponseDto updateTask(final TaskDto taskDto, final Long id) {
         Task task = findTaskById(id);
         task.setDescription(taskDto.description());
         task.setTitle(taskDto.title());
         task.setUserId(taskDto.userId());
+        task.setStatus(taskDto.status());
+
         taskRepository.save(task);
         return taskMapper.mapToDto(task);
     }
