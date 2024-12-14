@@ -24,6 +24,9 @@ spring:
     port: 465
     username: test_mail55@mail.ru
     password: JDd4j9nE2Q1eDJn2cB0S
+    from: test_mail55@mail.ru
+    to: test_mail55@mail.ru
+    subject: Task Status Update
     properties:
       mail:
         smtp:
@@ -45,9 +48,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
-email: test_mail55@mail.ru
-subject: Task Status Update
 
 server:
   port: 8081

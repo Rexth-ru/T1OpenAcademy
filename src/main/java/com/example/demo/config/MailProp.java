@@ -16,6 +16,9 @@ public class MailProp {
     private Integer port;
     private String username;
     private String password;
+    private String from;
+    private String to;
+    private String subject;
 
     @NestedConfigurationProperty
     private Properties properties;
