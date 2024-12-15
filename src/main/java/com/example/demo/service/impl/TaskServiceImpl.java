@@ -1,9 +1,5 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.aspect.annotation.LogException;
-import com.example.demo.aspect.annotation.LogExecution;
-import com.example.demo.aspect.annotation.LogResult;
-import com.example.demo.aspect.annotation.LogTracking;
 import com.example.demo.exception.TaskNotFoundException;
 import com.example.demo.mapper.TaskMapper;
 import com.example.demo.model.Task;
@@ -13,6 +9,10 @@ import com.example.demo.repository.TaskRepository;
 import com.example.demo.service.TaskService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.starterloghttp.aspect.annotation.LogException;
+import org.example.starterloghttp.aspect.annotation.LogExecution;
+import org.example.starterloghttp.aspect.annotation.LogResult;
+import org.example.starterloghttp.aspect.annotation.LogTracking;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -37,6 +37,7 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.mapToDto(task);
     }
 
+    @LogResult
     @LogTracking
     @Transactional
     @Override

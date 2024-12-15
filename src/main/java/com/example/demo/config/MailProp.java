@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 @Getter
 @Setter
@@ -19,14 +18,13 @@ public class MailProp {
     private String from;
     private String to;
     private String subject;
-
-    @NestedConfigurationProperty
     private Properties properties;
 
     @Getter
     @Setter
     @ToString
     public static class Properties {
+
         private Smtp smtp;
         private Starttls starttls;
 

@@ -28,12 +28,11 @@ spring:
     to: test_mail55@mail.ru
     subject: Task Status Update
     properties:
-      mail:
-        smtp:
-          auth: true
-        starttls:
-          enable: true
-          require: true
+      smtp:
+        auth: true
+      starttls:
+        enable: true
+        require: true
 
   datasource:
     url: jdbc:postgresql://localhost:54321/my_database
@@ -48,6 +47,18 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  logging:
+    level:
+      root: INFO
+      org.example.starterloghttp: INFO
+http:
+  logging:
+    enabled: true
+    level: info
+    log-request-headers: false
+    log-response-headers: false
+    logHttp: true
 
 server:
   port: 8081
