@@ -24,23 +24,22 @@ public class MailProp {
     @Setter
     @ToString
     public static class Properties {
-
         private Smtp smtp;
-        private Starttls starttls;
 
         @Getter
         @Setter
         @ToString
         public static class Smtp {
             private String auth;
-        }
+            private Starttls starttls;
 
-        @Getter
-        @Setter
-        @ToString
-        public static class Starttls {
-            private String enable;
-            private String require;
+            @Getter
+            @Setter
+            @ToString
+            public static class Starttls {
+                private String enable;
+                private String required;
+            }
         }
     }
 }
